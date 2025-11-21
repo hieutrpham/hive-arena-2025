@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
-agent="spiffybee"
+set -xe
+
+agent=
 name="test"
 host="localhost:8000"
 token=
 game_id=
-map="tiny"
+map="balanced"
 
 # start a new game
 start_game() {
@@ -19,14 +21,16 @@ game_url=
 
 main() {
 	map=$1
+	agent=$2
 	start_game $1
 	# connect your agent to test
 	go run ./$agent/ $host $game_id $name
 
-	game_url="$(curl $host/history/ | grep $game_id | sed -E 's/.*>(.*)<.*/\1/')"
+	game_url="$(curl $host/history/ | grep "$game_id" | sed -E 's/.*>(.*)<.*/\1/')"
 	echo "http://$host/history/$game_url"
 	# run viewer
 	go run ./viewer/ --url "http://$host/history/$game_url"
 }
 
-main $1
+# provide map and agent as command line arguments
+main $1 $2

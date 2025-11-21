@@ -18,11 +18,12 @@ func think(state *GameState, player int) []Order {
 		unit := hex.Entity
 
 		if unit != nil && unit.Type == BEE && unit.Player == player {
-			fmt.Println(coords, unit)
+			// fmt.Println(coords, unit)
 			orders = append(orders, Order{
 				Type:      MOVE,
 				Coords:    coords,
 				Direction: dirs[rand.Intn(len(dirs))],
+				// Direction: dirs[0],
 			})
 		}
 	}
