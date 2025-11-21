@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-set -xe
+# set -xe
 
-agent=
 name="test"
 host="localhost:8000"
 token=
@@ -19,9 +18,22 @@ start_game() {
 
 game_url=
 
+usage() {
+	echo "Usage: ./match <map_name> <agent>"
+}
+
+fatal() {
+	usage
+	exit 1
+}
+
 main() {
 	map=$1
 	agent=$2
+	if [[ -z $map || -z $agent ]]
+	then
+		fatal
+	fi
 	start_game $1
 	# connect your agent to test
 	go run ./$agent/ $host $game_id $name
@@ -33,4 +45,4 @@ main() {
 }
 
 # provide map and agent as command line arguments
-main $1 $2
+main $@
