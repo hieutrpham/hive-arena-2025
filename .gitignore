@@ -1,0 +1,15 @@
+.dub
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
+*.a
+*.dylib
+*.dll
+*.lib
+*.so
+
+.DS_Store
+arena_cli
+arena_server

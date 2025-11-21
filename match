@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+agent="spiffybee"
+name="test"
+host="localhost:8000"
+token=
+game_id=
+map="tiny"
+
+# start a new game
+start_game() {
+	map=$1
+	match="$(curl "$host/newgame?map=$map&players=1")"
+	token=$(echo $match | jq '.adminToken' | tr -d '"')
+	game_id=$(echo $match | jq '.id' | tr -d '"')
+}
+
+game_url=
+
+main() {
+	map=$1
+	start_game $1
+	# connect your agent to test
+	go run ./$agent/ $host $game_id $name
+
+	game_url="$(curl $host/history/ | grep $game_id | sed -E 's/.*>(.*)<.*/\1/')"
+	echo "http://$host/history/$game_url"
+	# run viewer
+	go run ./viewer/ --url "http://$host/history/$game_url"
+}
+
+main $1
