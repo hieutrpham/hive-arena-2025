@@ -37,9 +37,8 @@ main() {
 	start_game $1
 	# connect your agent to test
 	go run ./$agent/ $host $game_id $name
-
 	game_url="$(curl $host/history/ | grep "$game_id" | sed -E 's/.*>(.*)<.*/\1/')"
-	echo "http://$host/history/$game_url"
+
 	# run viewer
 	go run ./viewer/ --url "http://$host/history/$game_url"
 }
